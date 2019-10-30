@@ -1,0 +1,33 @@
+"/Users/yggdrasilk/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/192.6817.32/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/local/bin/gmake -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /System/Volumes/Data/Users/yggdrasilk/Code/archiver
+-- Conan: Automatic detection of conan settings from cmake
+-- Conan: Settings= -s;build_type=Debug;-s;compiler=apple-clang;-s;compiler.version=11.0;-s;compiler.libcxx=libc++
+-- Conan executing: conan install /System/Volumes/Data/Users/yggdrasilk/Code/archiver/conanfile.txt -s build_type=Debug -s compiler=apple-clang -s compiler.version=11.0 -s compiler.libcxx=libc++ -g=cmake --build=missing
+Configuration:
+[settings]
+arch=x86_64
+arch_build=x86_64
+build_type=Debug
+compiler=apple-clang
+compiler.libcxx=libc++
+compiler.version=11.0
+os=Macos
+os_build=Macos
+[options]
+[build_requires]
+[env]
+
+WARN: freetype/2.9.1@bincrafters/stable requirement libpng/1.6.36@bincrafters/stable overridden by opencv/4.0.1@conan/stable to libpng/1.6.34@bincrafters/stable 
+bzip2/1.0.6@conan/stable: WARN: Package is corrupted, removing folder: /Users/yggdrasilk/.conan/data/bzip2/1.0.6/conan/stable/package/e26f883c3e136952d830bcdc838898582f2a8d80
+bzip2/1.0.6@conan/stable: ERROR: Error downloading binary package: 'bzip2/1.0.6@conan/stable:e26f883c3e136952d830bcdc838898582f2a8d80'
+ERROR: HTTPSConnectionPool(host='conan.bintray.com', port=443): Max retries exceeded with url: /v1/ping (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x1053d14d0>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+
+Unable to connect to conan-center=https://conan.bintray.com
+CMake Error at /Users/yggdrasilk/Code/archiver/cmake-build-debug-g/conan.cmake:399 (message):
+  Conan install failed='1'
+Call Stack (most recent call first):
+  /Users/yggdrasilk/Code/archiver/cmake-build-debug-g/conan.cmake:485 (conan_cmake_install)
+  CMakeLists.txt:30 (conan_cmake_run)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/Users/yggdrasilk/Code/archiver/cmake-build-debug-g/CMakeFiles/CMakeOutput.log".

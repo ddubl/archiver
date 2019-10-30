@@ -1,0 +1,6 @@
+namespace archiver
+{
+    img removeAlpha() {
+
+    }
+}
