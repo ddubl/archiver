@@ -1,0 +1,11 @@
+[submodule "Openv_Contrib"]
+	name 	= opencv_contrib
+	path	= lib/opencv_contrib
+	url 	= https://github.com/opencv/opencv_contrib.git
+	sparse-checkout = true
+
+[submodule "cmake-init"]
+	name 	= cmake-init
+	path 	= .cmake
+	url 	= https://github.com/cginternals/cmake-init.git
+	sparse-checkout = true

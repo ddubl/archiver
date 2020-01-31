@@ -1,3 +1,6 @@
+# ------[GOALs]-----------------
+##  building subdirs as libraries
+
 # ------[CORE_DEFINITIONS]------
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 project(
@@ -7,11 +10,12 @@ project(
     LANGUAGES CXX C
 )
 add_definitions("-std=c++2a")
+#------[what is that for]------------------
 include(GNUInstallDirs)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# -----[PKGMANAGER_CONAN_INFO]hhhkkjkjkjjjar------
+# -----[PKGMANAGER_CONAN_INFO]------
 IF(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(DOWNLOAD "https://github.com/conan-io/cmake-conan/raw/v0.14/conan.cmake"
@@ -31,84 +35,83 @@ conan_cmake_run(
     CONANFILE conanfile.txt
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
-#    INSTALL_DIR
-#        ${PROJECT_SOURCE_DIR}/deps
-#    OPTIONS
-#        opencv:contrib=True
-#    ENV
-#        opencv:-DOPENCV_EXTRA_MODULES_PATH=${opencvModules}
-) #deps are available as CONAN_PKG::pkgname
-
+    INSTALL_DIR
+        ${PROJECT_SOURCE_DIR}/DEPS
+    OPTIONS
+        OPENCV:CONTRIB=TRUE
+    ENV
+        OPENCV:-DOPENCV_EXTRA_MODULES_PATH=${OPENCVMODULES}
+) #DEPS ARE AVAILABLE AS CONAN_PKG::PKGNAME
 
 # ------[MAIN_DEF]-----------
-file(GLOB def_SOURCES  "${PROJECT_SOURCE_DIR}/src/*.c(pp)?")
-file(GLOB dec_SOURCES "${PROJECT_SOURCE_DIR}/inc/*.h(pp)?")
-add_executable(archiver src/Archiver.cpp inc/img.h)
-target_sources(archiver PRIVATE ${def_SOURCES} ${dec_SOURCES})
-target_include_directories(archiver
+FILE(GLOB DEF_SOURCES  "${PROJECT_SOURCE_DIR}/SRC/*.C(PP)?")
+FILE(GLOB DEC_SOURCES "${PROJECT_SOURCE_DIR}/INC/*.H(PP)?")
+ADD_EXECUTABLE(ARCHIVER SRC/ARCHIVER.CPP INC/IMG.H)
+TARGET_SOURCES(ARCHIVER PRIVATE ${DEF_SOURCES} ${DEC_SOURCES})
+TARGET_INCLUDE_DIRECTORIES(ARCHIVER
         PUBLIC
-            $<INSTALL_INTERFACE:${CMAKE_SOURCE_DIR}/inc>
-            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/inc>
+            $<INSTALL_INTERFACE:${CMAKE_SOURCE_DIR}/INC>
+            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/INC>
         PRIVATE
-            ${CMAKE_SOURCE_DIR}/src
+            ${CMAKE_SOURCE_DIR}/SRC
         )
 
 #-------[LIBRARIES]--------------
-## OPENCV_CONTRIB
-MACRO(SUBDIRLIST result curdir)
-    FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-    SET(dirlist /*)
-    SET(dirlist "")
-    FOREACH(child ${children})
-        IF(IS_DIRECTORY ${curdir}/${child})
-            LIST(APPEND dirlist ${child})
-        ENDIF()
-    ENDFOREACH()
-    SET(${result} ${dirlist})
-ENDMACRO(SUBDIRLIST)
-SUBDIRLIST(CVCONTRIB ${CMAKE_CURRENT_SOURCE_DIR}/lib/opencv_contrib/modules)
+## opencv_contrib
+macro(subdirlist result curdir)
+    file(glob children relative ${curdir} ${curdir}/*)
+    set(dirlist /*)
+    set(dirlist "")
+    foreach(child ${children})
+        if(is_directory ${curdir}/${child})
+            list(append dirlist ${child})
+        endif()
+    endforeach()
+    set(${result} ${dirlist})
+endmacro(subdirlist)
+subdirlist(cvcontrib ${cmake_current_source_dir}/lib/opencv_contrib/modules)
 
-add_library(OPENCV_CONTRIB INTERFACE)
+add_library(opencv_contrib interface)
 set(libs "")
-FOREACH(DIRNAME IN LISTS CVCONTRIB)
-    file(TO_CMAKE_PATH
-            ${CMAKE_CURRENT_SOURCE_DIR}/lib/opencv_contrib/modules/${DIRNAME}
-            LIBPATH
+foreach(dirname in lists cvcontrib)
+    file(to_cmake_path
+            ${cmake_current_source_dir}/lib/opencv_contrib/modules/${dirname}
+            libpath
     )
 
-    string(REGEX MATCH "(/$)?.*" libName ${DIRNAME})
-    set(MAIN ${LIBPATH}/include/opencv2/${libName}.hpp)
+    string(regex match "(/$)?.*" libname ${dirname})
+    set(main ${libpath}/include/opencv2/${libname}.hpp)
 
-    file(GLOB_RECURSE t_HEAD_SOURCES "${LIBPATH}/*.h(pp)?")
-    file(GLOB_RECURSE t_LIB_SOURCES "${LIBPATH}/*.c(pp)?")
-    add_library(${libName} OBJECT ${MAIN})
-        target_sources(${libName} PRIVATE ${t_LIBS_SOURCES})
-        target_include_directories(${libName}
-                PUBLIC
-                    $<INSTALL_INTERFACE:${LIBPATH}/include/opencv2>
-                    $<BUILD_INTERFACE:${LIBPATH}/include/opencv2>
-                PRIVATE
-                    ${LIBPATH}/src
-                    ${LIBPATH}/include/opencv2/${libName}
+    file(glob_recurse t_head_sources "${libpath}/*.h(pp)?")
+    file(glob_recurse t_lib_sources "${libpath}/*.c(pp)?")
+    add_library(${libname} object ${main})
+        target_sources(${libname} private ${t_libs_sources})
+        target_include_directories(${libname}
+                public
+                    $<install_interface:${libpath}/include/opencv2>
+                    $<build_interface:${libpath}/include/opencv2>
+                private
+                    ${libpath}/src
+                    ${libpath}/include/opencv2/${libname}
                 )
-        set_target_properties(${libName} PROPERTIES PUBLIC_HEADER ${MAIN})
-        target_link_libraries(${libName} PUBLIC CONAN_PKG::opencv)
-    list(APPEND libs ${libName})
-ENDFOREACH(DIRNAME)
+        set_target_properties(${libname} properties public_header ${main})
+        target_link_libraries(${libname} public conan_pkg::opencv)
+    list(append libs ${libname})
+endforeach(dirname)
 
-FOREACH(lib IN LISTS libs)
-    target_link_libraries(OPENCV_CONTRIB INTERFACE $<TARGET_OBJECTS:${lib}>)
-ENDFOREACH()
+foreach(lib in lists libs)
+    target_link_libraries(opencv_contrib interface $<target_objects:${lib}>)
+endforeach()
 
-INSTALL(
-    TARGETS OPENCV_CONTRIB ${libs}
-    LIBRARY
-        DESTINATION ${CMAKE_BINARY_DIR}/lib
-        COMPONENT Libraries
-        NAMELINK_COMPONENT Development
-    PUBLIC_HEADER
-        COMPONENT Development
+install(
+    targets opencv_contrib ${libs}
+    library
+        destination ${cmake_binary_dir}/lib
+        component libraries
+        namelink_component development
+    public_header
+        component development
 )
 
-#----------[LINK_MAIN]--------------------
-conan_target_link_libraries(archiver PUBLIC ${CONAN_PKG} ${OPENCV_CONTRIB})
+#----------[link_main]--------------------
+conan_target_link_libraries(archiver public ${conan_pkg} ${opencv_contrib})
