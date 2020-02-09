@@ -1,31 +1,13 @@
-"/Users/yggdrasilk/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/193.5233.144/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/local/bin/gmake -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /System/Volumes/Data/Users/yggdrasilk/Code/archiver
--- Conan: Automatic detection of conan settings from cmake
--- Conan: Settings= -s;build_type=Debug;-s;compiler=apple-clang;-s;compiler.version=11.0;-s;compiler.libcxx=libc++
--- Conan executing: conan install /System/Volumes/Data/Users/yggdrasilk/Code/archiver/conanfile.txt -s build_type=Debug -s compiler=apple-clang -s compiler.version=11.0 -s compiler.libcxx=libc++ -e=OPENCV:-DOPENCV_EXTRA_MODULES_PATH= -g=cmake --build=missing --build=INSTALL_DIR --build=/System/Volumes/Data/Users/yggdrasilk/Code/archiver/DEPS -o=OPENCV:CONTRIB=TRUE
-Configuration:
-[settings]
-arch=x86_64
-arch_build=x86_64
-build_type=Debug
-compiler=apple-clang
-compiler.libcxx=libc++
-compiler.version=11.0
-os=Macos
-os_build=Macos
-[options]
-OPENCV:CONTRIB=TRUE
-[build_requires]
-[env]
-OPENCV:-DOPENCV_EXTRA_MODULES_PATH=
-libjpeg/9c@bincrafters/stable: WARN: Package is corrupted, removing folder: /Users/yggdrasilk/.conan/data/libjpeg/9c/bincrafters/stable/package/0aa7be2d0914b6f3128105e305c90b9cb0cae86d
-ERROR: Conflict in opencv/4.1.1@conan/stable
-    Requirement zlib/1.2.11 conflicts with already defined zlib/1.2.11@conan/stable
-    To change it, override it in your base requirements
-CMake Error at /Users/yggdrasilk/Code/archiver/cmake-build-debug-g/conan.cmake:399 (message):
-  Conan install failed='1'
-Call Stack (most recent call first):
-  /Users/yggdrasilk/Code/archiver/cmake-build-debug-g/conan.cmake:485 (conan_cmake_install)
-  CMakeLists.txt:34 (conan_cmake_run)
+"/Users/yggdrasilk/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/193.6015.37/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/local/bin/gmake -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /System/Volumes/Data/Users/yggdrasilk/Code/archiver
+-- The CXX compiler identification is AppleClang 11.0.0.11000020
+-- Check for working CXX compiler: /usr/bin/g++
+-- Check for working CXX compiler: /usr/bin/g++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Error at CMakeLists.txt:18 (target_include_directories):
+  target_include_directories called with invalid arguments
 
 
 -- Configuring incomplete, errors occurred!
